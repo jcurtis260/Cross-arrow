@@ -14,6 +14,7 @@ export interface Line {
   startY: number;
   length: number;
   orientation: Orientation;
+  direction?: Direction;
 }
 
 export interface Level {
