@@ -69,6 +69,8 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) to play the game!
 
+**Note:** The database tables will be automatically created on first use. No manual SQL execution needed!
+
 ## Deployment to Vercel
 
 ### Step 1: Create Vercel Account
