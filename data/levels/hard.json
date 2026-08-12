@@ -1,0 +1,162 @@
+[
+  {
+    "levelId": 21,
+    "gridSize": 7,
+    "lines": [
+      {"id": 1, "startX": 2, "startY": 3, "length": 4, "orientation": "horizontal"},
+      {"id": 2, "startX": 3, "startY": 1, "length": 4, "orientation": "vertical"},
+      {"id": 3, "startX": 0, "startY": 1, "length": 3, "orientation": "horizontal"},
+      {"id": 4, "startX": 5, "startY": 2, "length": 2, "orientation": "horizontal"},
+      {"id": 5, "startX": 1, "startY": 5, "length": 3, "orientation": "horizontal"}
+    ],
+    "difficulty": "hard",
+    "parMoves": 5,
+    "hintsAvailable": 3
+  },
+  {
+    "levelId": 22,
+    "gridSize": 7,
+    "lines": [
+      {"id": 1, "startX": 1, "startY": 2, "length": 4, "orientation": "horizontal"},
+      {"id": 2, "startX": 2, "startY": 4, "length": 4, "orientation": "horizontal"},
+      {"id": 3, "startX": 2, "startY": 0, "length": 3, "orientation": "vertical"},
+      {"id": 4, "startX": 5, "startY": 1, "length": 3, "orientation": "vertical"},
+      {"id": 5, "startX": 0, "startY": 0, "length": 2, "orientation": "vertical"},
+      {"id": 6, "startX": 4, "startY": 5, "length": 2, "orientation": "horizontal"}
+    ],
+    "difficulty": "hard",
+    "parMoves": 6,
+    "hintsAvailable": 3
+  },
+  {
+    "levelId": 23,
+    "gridSize": 7,
+    "lines": [
+      {"id": 1, "startX": 2, "startY": 2, "length": 3, "orientation": "horizontal"},
+      {"id": 2, "startX": 1, "startY": 4, "length": 4, "orientation": "horizontal"},
+      {"id": 3, "startX": 3, "startY": 0, "length": 4, "orientation": "vertical"},
+      {"id": 4, "startX": 0, "startY": 1, "length": 2, "orientation": "vertical"},
+      {"id": 5, "startX": 6, "startY": 2, "length": 3, "orientation": "vertical"},
+      {"id": 6, "startX": 4, "startY": 6, "length": 2, "orientation": "horizontal"}
+    ],
+    "difficulty": "hard",
+    "parMoves": 6,
+    "hintsAvailable": 3
+  },
+  {
+    "levelId": 24,
+    "gridSize": 7,
+    "lines": [
+      {"id": 1, "startX": 1, "startY": 1, "length": 4, "orientation": "horizontal"},
+      {"id": 2, "startX": 2, "startY": 3, "length": 4, "orientation": "horizontal"},
+      {"id": 3, "startX": 1, "startY": 5, "length": 3, "orientation": "horizontal"},
+      {"id": 4, "startX": 2, "startY": 0, "length": 2, "orientation": "vertical"},
+      {"id": 5, "startX": 4, "startY": 1, "length": 3, "orientation": "vertical"},
+      {"id": 6, "startX": 0, "startY": 2, "length": 3, "orientation": "vertical"},
+      {"id": 7, "startX": 6, "startY": 4, "length": 2, "orientation": "vertical"}
+    ],
+    "difficulty": "hard",
+    "parMoves": 7,
+    "hintsAvailable": 3
+  },
+  {
+    "levelId": 25,
+    "gridSize": 7,
+    "lines": [
+      {"id": 1, "startX": 0, "startY": 2, "length": 5, "orientation": "horizontal"},
+      {"id": 2, "startX": 2, "startY": 4, "length": 4, "orientation": "horizontal"},
+      {"id": 3, "startX": 3, "startY": 0, "length": 4, "orientation": "vertical"},
+      {"id": 4, "startX": 1, "startY": 1, "length": 3, "orientation": "vertical"},
+      {"id": 5, "startX": 5, "startY": 3, "length": 3, "orientation": "vertical"},
+      {"id": 6, "startX": 4, "startY": 6, "length": 2, "orientation": "horizontal"},
+      {"id": 7, "startX": 0, "startY": 5, "length": 2, "orientation": "vertical"}
+    ],
+    "difficulty": "hard",
+    "parMoves": 7,
+    "hintsAvailable": 3
+  },
+  {
+    "levelId": 26,
+    "gridSize": 7,
+    "lines": [
+      {"id": 1, "startX": 1, "startY": 2, "length": 5, "orientation": "horizontal"},
+      {"id": 2, "startX": 2, "startY": 4, "length": 3, "orientation": "horizontal"},
+      {"id": 3, "startX": 2, "startY": 0, "length": 3, "orientation": "vertical"},
+      {"id": 4, "startX": 4, "startY": 1, "length": 4, "orientation": "vertical"},
+      {"id": 5, "startX": 0, "startY": 0, "length": 3, "orientation": "vertical"},
+      {"id": 6, "startX": 6, "startY": 3, "length": 3, "orientation": "vertical"},
+      {"id": 7, "startX": 5, "startY": 6, "length": 2, "orientation": "horizontal"}
+    ],
+    "difficulty": "hard",
+    "parMoves": 7,
+    "hintsAvailable": 3
+  },
+  {
+    "levelId": 27,
+    "gridSize": 7,
+    "lines": [
+      {"id": 1, "startX": 0, "startY": 1, "length": 4, "orientation": "horizontal"},
+      {"id": 2, "startX": 3, "startY": 3, "length": 4, "orientation": "horizontal"},
+      {"id": 3, "startX": 1, "startY": 5, "length": 4, "orientation": "horizontal"},
+      {"id": 4, "startX": 1, "startY": 0, "length": 2, "orientation": "vertical"},
+      {"id": 5, "startX": 3, "startY": 0, "length": 3, "orientation": "vertical"},
+      {"id": 6, "startX": 5, "startY": 1, "length": 3, "orientation": "vertical"},
+      {"id": 7, "startX": 0, "startY": 3, "length": 3, "orientation": "vertical"},
+      {"id": 8, "startX": 6, "startY": 5, "length": 2, "orientation": "vertical"}
+    ],
+    "difficulty": "hard",
+    "parMoves": 8,
+    "hintsAvailable": 3
+  },
+  {
+    "levelId": 28,
+    "gridSize": 7,
+    "lines": [
+      {"id": 1, "startX": 2, "startY": 2, "length": 4, "orientation": "horizontal"},
+      {"id": 2, "startX": 1, "startY": 4, "length": 4, "orientation": "horizontal"},
+      {"id": 3, "startX": 3, "startY": 0, "length": 3, "orientation": "vertical"},
+      {"id": 4, "startX": 1, "startY": 1, "length": 3, "orientation": "vertical"},
+      {"id": 5, "startX": 5, "startY": 2, "length": 4, "orientation": "vertical"},
+      {"id": 6, "startX": 0, "startY": 0, "length": 2, "orientation": "horizontal"},
+      {"id": 7, "startX": 5, "startY": 6, "length": 2, "orientation": "horizontal"},
+      {"id": 8, "startX": 0, "startY": 5, "length": 2, "orientation": "vertical"}
+    ],
+    "difficulty": "hard",
+    "parMoves": 8,
+    "hintsAvailable": 3
+  },
+  {
+    "levelId": 29,
+    "gridSize": 7,
+    "lines": [
+      {"id": 1, "startX": 1, "startY": 1, "length": 5, "orientation": "horizontal"},
+      {"id": 2, "startX": 0, "startY": 3, "length": 4, "orientation": "horizontal"},
+      {"id": 3, "startX": 3, "startY": 5, "length": 3, "orientation": "horizontal"},
+      {"id": 4, "startX": 2, "startY": 0, "length": 4, "orientation": "vertical"},
+      {"id": 5, "startX": 4, "startY": 2, "length": 4, "orientation": "vertical"},
+      {"id": 6, "startX": 0, "startY": 0, "length": 2, "orientation": "vertical"},
+      {"id": 7, "startX": 6, "startY": 1, "length": 3, "orientation": "vertical"},
+      {"id": 8, "startX": 5, "startY": 6, "length": 2, "orientation": "horizontal"}
+    ],
+    "difficulty": "hard",
+    "parMoves": 8,
+    "hintsAvailable": 3
+  },
+  {
+    "levelId": 30,
+    "gridSize": 7,
+    "lines": [
+      {"id": 1, "startX": 1, "startY": 2, "length": 5, "orientation": "horizontal"},
+      {"id": 2, "startX": 2, "startY": 4, "length": 4, "orientation": "horizontal"},
+      {"id": 3, "startX": 0, "startY": 0, "length": 3, "orientation": "horizontal"},
+      {"id": 4, "startX": 2, "startY": 0, "length": 3, "orientation": "vertical"},
+      {"id": 5, "startX": 4, "startY": 1, "length": 4, "orientation": "vertical"},
+      {"id": 6, "startX": 6, "startY": 2, "length": 4, "orientation": "vertical"},
+      {"id": 7, "startX": 0, "startY": 3, "length": 3, "orientation": "vertical"},
+      {"id": 8, "startX": 5, "startY": 6, "length": 2, "orientation": "horizontal"}
+    ],
+    "difficulty": "hard",
+    "parMoves": 8,
+    "hintsAvailable": 3
+  }
+]
