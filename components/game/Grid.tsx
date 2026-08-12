@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Line } from './Line';
 import { useGameStore } from '@/store/game-store';
 import { getValidDirectionsForLine } from '@/lib/collision-detector';
@@ -15,50 +15,17 @@ export function Grid({ cellSize = 60 }: GridProps) {
   
   const gridSize = grid ? grid.size * cellSize : 0;
   
-  const gridLines = useMemo(() => {
-    if (!grid) return [];
-    
-    const lines = [];
-    for (let i = 0; i <= grid.size; i++) {
-      lines.push(
-        <div
-          key={`h-${i}`}
-          className="absolute bg-gray-300"
-          style={{
-            left: 0,
-            top: i * cellSize,
-            width: gridSize,
-            height: 1,
-          }}
-        />,
-        <div
-          key={`v-${i}`}
-          className="absolute bg-gray-300"
-          style={{
-            left: i * cellSize,
-            top: 0,
-            width: 1,
-            height: gridSize,
-          }}
-        />
-      );
-    }
-    return lines;
-  }, [grid, cellSize, gridSize]);
-  
   if (!grid) return null;
   
   return (
     <div className="relative flex items-center justify-center">
       <div
-        className="relative bg-white rounded-lg shadow-lg"
+        className="relative overflow-hidden bg-white"
         style={{
           width: gridSize,
           height: gridSize,
         }}
       >
-        {gridLines}
-        
         <AnimatePresence>
           {lines.map((line) => {
             const validDirections = getValidDirectionsForLine(line, grid);

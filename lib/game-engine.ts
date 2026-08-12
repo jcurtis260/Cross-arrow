@@ -59,70 +59,14 @@ export function moveLineInDirection(
       grid.cells[cell.y][cell.x].lineId = null;
     }
   }
-  
-  // Check if line will move off the grid
-  const newLine = moveLine(line, direction);
-  const willExit = isLineOffGrid(newLine, grid.size);
-  
-  if (willExit) {
-    return {
-      grid,
-      lines: lines.filter(l => l.id !== lineId),
-      lineRemoved: true
-    };
-  }
-  
-  const newLineCells = getLineCells(newLine);
-  
-  for (const cell of newLineCells) {
-    if (grid.cells[cell.y] && grid.cells[cell.y][cell.x]) {
-      grid.cells[cell.y][cell.x].occupied = true;
-      grid.cells[cell.y][cell.x].lineId = newLine.id;
-    }
-  }
-  
-  const updatedLines = lines.map(l => l.id === lineId ? newLine : l);
-  
-  return { grid, lines: updatedLines, lineRemoved: false };
-}
 
-function moveLine(line: Line, direction: Direction): Line {
-  let newStartX = line.startX;
-  let newStartY = line.startY;
-  
-  switch (direction) {
-    case 'up':
-      newStartY -= 1;
-      break;
-    case 'down':
-      newStartY += 1;
-      break;
-    case 'left':
-      newStartX -= 1;
-      break;
-    case 'right':
-      newStartX += 1;
-      break;
-  }
-  
+  // A valid tap sends the complete arrow out of the board in one motion.
+  // The renderer owns the exit animation; the game state removes it afterward.
   return {
-    ...line,
-    startX: newStartX,
-    startY: newStartY
+    grid,
+    lines: lines.filter(l => l.id !== lineId),
+    lineRemoved: true
   };
-}
-
-function isLineOffGrid(line: Line, gridSize: number): boolean {
-  // Check if any part of the line is outside the grid
-  const lineCells = getLineCells(line);
-  
-  for (const cell of lineCells) {
-    if (cell.x < 0 || cell.x >= gridSize || cell.y < 0 || cell.y >= gridSize) {
-      return true;
-    }
-  }
-  
-  return false;
 }
 
 export function checkWinCondition(lines: Line[]): boolean {

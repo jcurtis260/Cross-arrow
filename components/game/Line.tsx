@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Line as LineType, Direction } from '@/types/game';
+import { getLineDirection } from '@/lib/collision-detector';
 
 interface LineProps {
   line: LineType;
@@ -13,136 +14,56 @@ interface LineProps {
 }
 
 export function Line({ line, cellSize, gridSize, validDirections, onClick }: LineProps) {
-  const [isAnimating, setIsAnimating] = useState(false);
-  
+  const [isLeaving, setIsLeaving] = useState(false);
+  const direction = getLineDirection(line);
+  const canLeave = validDirections.length > 0;
+  const lengthPx = line.length * cellSize;
   const x = line.startX * cellSize;
   const y = line.startY * cellSize;
-  const width = line.orientation === 'horizontal' ? line.length * cellSize : cellSize;
-  const height = line.orientation === 'vertical' ? line.length * cellSize : cellSize;
-  
-  const lineThickness = cellSize * 0.6;
-  const offset = (cellSize - lineThickness) / 2;
-  
-  const canMove = validDirections.length > 0;
-  const primaryDirection = validDirections[0];
-  
-  // Calculate exit animation
-  let exitX = line.orientation === 'horizontal' ? x : x + offset;
-  let exitY = line.orientation === 'vertical' ? y : y + offset;
-  
-  if (isAnimating && primaryDirection) {
-    const distance = gridSize * cellSize + cellSize * 2;
-    switch (primaryDirection) {
-      case 'up':
-        exitY = -distance;
-        break;
-      case 'down':
-        exitY = distance;
-        break;
-      case 'left':
-        exitX = -distance;
-        break;
-      case 'right':
-        exitX = distance;
-        break;
-    }
-  }
-  
-  const handleClick = () => {
-    if (canMove && !isAnimating) {
-      setIsAnimating(true);
-      setTimeout(() => {
-        onClick();
-      }, 400);
-    }
-  };
-  
+  const isHorizontal = line.orientation === 'horizontal';
+  const canvasWidth = isHorizontal ? lengthPx : cellSize;
+  const canvasHeight = isHorizontal ? cellSize : lengthPx;
+  const boardDistance = gridSize * cellSize + lengthPx + cellSize;
+
+  const exitOffset = direction === 'left'
+    ? { x: -boardDistance, y: 0 }
+    : direction === 'right'
+      ? { x: boardDistance, y: 0 }
+      : direction === 'up'
+        ? { x: 0, y: -boardDistance }
+        : { x: 0, y: boardDistance };
+
+  const arrow = isHorizontal
+    ? direction === 'right'
+      ? `${canvasWidth - 1},${cellSize / 2} ${canvasWidth - 12},${cellSize / 2 - 7} ${canvasWidth - 12},${cellSize / 2 + 7}`
+      : `1,${cellSize / 2} 12,${cellSize / 2 - 7} 12,${cellSize / 2 + 7}`
+    : direction === 'down'
+      ? `${cellSize / 2},${canvasHeight - 1} ${cellSize / 2 - 7},${canvasHeight - 12} ${cellSize / 2 + 7},${canvasHeight - 12}`
+      : `${cellSize / 2},1 ${cellSize / 2 - 7},12 ${cellSize / 2 + 7},12`;
+
+  const lineStart = isHorizontal
+    ? { x1: direction === 'right' ? 0 : 10, y1: cellSize / 2, x2: direction === 'right' ? canvasWidth - 9 : canvasWidth, y2: cellSize / 2 }
+    : { x1: cellSize / 2, y1: direction === 'down' ? 0 : 10, x2: cellSize / 2, y2: direction === 'down' ? canvasHeight - 9 : canvasHeight };
+
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ 
-        opacity: isAnimating ? 0 : 1,
-        scale: 1,
-        left: exitX,
-        top: exitY,
+    <motion.button
+      type="button"
+      aria-label={`Arrow pointing ${direction}`}
+      disabled={!canLeave || isLeaving}
+      initial={{ opacity: 0 }}
+      animate={isLeaving ? { ...exitOffset, opacity: 0 } : { x: 0, y: 0, opacity: canLeave ? 1 : 0.35 }}
+      transition={isLeaving ? { duration: 0.48, ease: 'easeIn' } : { duration: 0.15 }}
+      onClick={() => canLeave && setIsLeaving(true)}
+      onAnimationComplete={() => {
+        if (isLeaving) onClick();
       }}
-      exit={{ opacity: 0, scale: 0.8 }}
-      transition={{
-        type: isAnimating ? 'tween' : 'spring',
-        duration: isAnimating ? 0.4 : 0.3,
-        ease: isAnimating ? 'easeInOut' : 'easeOut',
-      }}
-      onClick={handleClick}
-      className={`absolute bg-black rounded-full ${canMove ? 'cursor-pointer active:scale-95' : 'cursor-not-allowed opacity-50'}`}
-      style={{
-        left: line.orientation === 'horizontal' ? x : x + offset,
-        top: line.orientation === 'vertical' ? y : y + offset,
-        width: line.orientation === 'horizontal' ? width : lineThickness,
-        height: line.orientation === 'vertical' ? height : lineThickness,
-      }}
+      className={`absolute z-10 touch-manipulation bg-transparent p-0 ${canLeave ? 'cursor-pointer' : 'cursor-not-allowed'}`}
+      style={{ left: x, top: y, width: canvasWidth, height: canvasHeight }}
     >
-      {/* Draw clear arrows at the ends */}
-      {canMove && validDirections.map((direction) => {
-        let arrowStyle: React.CSSProperties = {};
-        let arrowPath = '';
-        
-        if (line.orientation === 'horizontal') {
-          // Horizontal line - arrows on top or bottom
-          if (direction === 'up') {
-            arrowStyle = {
-              position: 'absolute',
-              left: '50%',
-              top: '-12px',
-              transform: 'translateX(-50%)',
-            };
-            arrowPath = 'M12 4L8 8h3v8h2V8h3z';
-          } else if (direction === 'down') {
-            arrowStyle = {
-              position: 'absolute',
-              left: '50%',
-              bottom: '-12px',
-              transform: 'translateX(-50%) rotate(180deg)',
-            };
-            arrowPath = 'M12 4L8 8h3v8h2V8h3z';
-          }
-        } else {
-          // Vertical line - arrows on left or right
-          if (direction === 'left') {
-            arrowStyle = {
-              position: 'absolute',
-              top: '50%',
-              left: '-12px',
-              transform: 'translateY(-50%) rotate(-90deg)',
-            };
-            arrowPath = 'M12 4L8 8h3v8h2V8h3z';
-          } else if (direction === 'right') {
-            arrowStyle = {
-              position: 'absolute',
-              top: '50%',
-              right: '-12px',
-              transform: 'translateY(-50%) rotate(90deg)',
-            };
-            arrowPath = 'M12 4L8 8h3v8h2V8h3z';
-          }
-        }
-        
-        return (
-          <svg
-            key={direction}
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="white"
-            style={{
-              ...arrowStyle,
-              filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.4))',
-              pointerEvents: 'none',
-            }}
-          >
-            <path d={arrowPath} />
-          </svg>
-        );
-      })}
-    </motion.div>
+      <svg width={canvasWidth} height={canvasHeight} className="overflow-visible" aria-hidden="true">
+        <line {...lineStart} stroke="black" strokeWidth="4" strokeLinecap="square" />
+        <polygon points={arrow} fill="black" />
+      </svg>
+    </motion.button>
   );
 }
