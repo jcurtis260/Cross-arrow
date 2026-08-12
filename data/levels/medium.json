@@ -3,9 +3,30 @@
     "levelId": 11,
     "gridSize": 6,
     "lines": [
-      {"id": 1, "startX": 1, "startY": 2, "length": 4, "orientation": "horizontal"},
-      {"id": 2, "startX": 2, "startY": 0, "length": 2, "orientation": "vertical"},
-      {"id": 3, "startX": 0, "startY": 4, "length": 3, "orientation": "horizontal"}
+      {
+        "id": 1,
+        "startX": 1,
+        "startY": 2,
+        "length": 4,
+        "orientation": "horizontal",
+        "direction": "left"
+      },
+      {
+        "id": 2,
+        "startX": 2,
+        "startY": 0,
+        "length": 2,
+        "orientation": "vertical",
+        "direction": "up"
+      },
+      {
+        "id": 3,
+        "startX": 0,
+        "startY": 4,
+        "length": 3,
+        "orientation": "horizontal",
+        "direction": "left"
+      }
     ],
     "difficulty": "medium",
     "parMoves": 3,
@@ -15,10 +36,38 @@
     "levelId": 12,
     "gridSize": 6,
     "lines": [
-      {"id": 1, "startX": 2, "startY": 1, "length": 3, "orientation": "horizontal"},
-      {"id": 2, "startX": 1, "startY": 3, "length": 3, "orientation": "vertical"},
-      {"id": 3, "startX": 4, "startY": 3, "length": 2, "orientation": "vertical"},
-      {"id": 4, "startX": 0, "startY": 0, "length": 2, "orientation": "horizontal"}
+      {
+        "id": 1,
+        "startX": 2,
+        "startY": 1,
+        "length": 3,
+        "orientation": "horizontal",
+        "direction": "left"
+      },
+      {
+        "id": 2,
+        "startX": 1,
+        "startY": 3,
+        "length": 3,
+        "orientation": "vertical",
+        "direction": "down"
+      },
+      {
+        "id": 3,
+        "startX": 4,
+        "startY": 3,
+        "length": 2,
+        "orientation": "vertical",
+        "direction": "up"
+      },
+      {
+        "id": 4,
+        "startX": 0,
+        "startY": 0,
+        "length": 2,
+        "orientation": "horizontal",
+        "direction": "left"
+      }
     ],
     "difficulty": "medium",
     "parMoves": 4,
@@ -28,10 +77,38 @@
     "levelId": 13,
     "gridSize": 6,
     "lines": [
-      {"id": 1, "startX": 2, "startY": 2, "length": 3, "orientation": "horizontal"},
-      {"id": 2, "startX": 3, "startY": 0, "length": 3, "orientation": "vertical"},
-      {"id": 3, "startX": 0, "startY": 1, "length": 2, "orientation": "horizontal"},
-      {"id": 4, "startX": 1, "startY": 4, "length": 2, "orientation": "vertical"}
+      {
+        "id": 1,
+        "startX": 2,
+        "startY": 2,
+        "length": 3,
+        "orientation": "horizontal",
+        "direction": "left"
+      },
+      {
+        "id": 2,
+        "startX": 3,
+        "startY": 0,
+        "length": 3,
+        "orientation": "vertical",
+        "direction": "up"
+      },
+      {
+        "id": 3,
+        "startX": 0,
+        "startY": 1,
+        "length": 2,
+        "orientation": "horizontal",
+        "direction": "left"
+      },
+      {
+        "id": 4,
+        "startX": 1,
+        "startY": 4,
+        "length": 2,
+        "orientation": "vertical",
+        "direction": "up"
+      }
     ],
     "difficulty": "medium",
     "parMoves": 4,
@@ -41,10 +118,38 @@
     "levelId": 14,
     "gridSize": 6,
     "lines": [
-      {"id": 1, "startX": 1, "startY": 1, "length": 4, "orientation": "horizontal"},
-      {"id": 2, "startX": 2, "startY": 3, "length": 3, "orientation": "horizontal"},
-      {"id": 3, "startX": 0, "startY": 0, "length": 3, "orientation": "vertical"},
-      {"id": 4, "startX": 5, "startY": 2, "length": 3, "orientation": "vertical"}
+      {
+        "id": 1,
+        "startX": 1,
+        "startY": 1,
+        "length": 4,
+        "orientation": "horizontal",
+        "direction": "right"
+      },
+      {
+        "id": 2,
+        "startX": 2,
+        "startY": 3,
+        "length": 3,
+        "orientation": "horizontal",
+        "direction": "left"
+      },
+      {
+        "id": 3,
+        "startX": 0,
+        "startY": 0,
+        "length": 3,
+        "orientation": "vertical",
+        "direction": "up"
+      },
+      {
+        "id": 4,
+        "startX": 5,
+        "startY": 2,
+        "length": 3,
+        "orientation": "vertical",
+        "direction": "up"
+      }
     ],
     "difficulty": "medium",
     "parMoves": 4,
@@ -54,11 +159,46 @@
     "levelId": 15,
     "gridSize": 6,
     "lines": [
-      {"id": 1, "startX": 2, "startY": 0, "length": 3, "orientation": "horizontal"},
-      {"id": 2, "startX": 1, "startY": 2, "length": 3, "orientation": "horizontal"},
-      {"id": 3, "startX": 3, "startY": 4, "length": 2, "orientation": "horizontal"},
-      {"id": 4, "startX": 1, "startY": 3, "length": 2, "orientation": "vertical"},
-      {"id": 5, "startX": 5, "startY": 1, "length": 3, "orientation": "vertical"}
+      {
+        "id": 1,
+        "startX": 2,
+        "startY": 0,
+        "length": 3,
+        "orientation": "horizontal",
+        "direction": "left"
+      },
+      {
+        "id": 2,
+        "startX": 1,
+        "startY": 2,
+        "length": 3,
+        "orientation": "horizontal",
+        "direction": "left"
+      },
+      {
+        "id": 3,
+        "startX": 3,
+        "startY": 4,
+        "length": 2,
+        "orientation": "horizontal",
+        "direction": "right"
+      },
+      {
+        "id": 4,
+        "startX": 1,
+        "startY": 3,
+        "length": 2,
+        "orientation": "vertical",
+        "direction": "up"
+      },
+      {
+        "id": 5,
+        "startX": 5,
+        "startY": 1,
+        "length": 3,
+        "orientation": "vertical",
+        "direction": "up"
+      }
     ],
     "difficulty": "medium",
     "parMoves": 5,
@@ -68,11 +208,46 @@
     "levelId": 16,
     "gridSize": 6,
     "lines": [
-      {"id": 1, "startX": 0, "startY": 2, "length": 4, "orientation": "horizontal"},
-      {"id": 2, "startX": 2, "startY": 0, "length": 4, "orientation": "vertical"},
-      {"id": 3, "startX": 4, "startY": 1, "length": 2, "orientation": "horizontal"},
-      {"id": 4, "startX": 1, "startY": 4, "length": 3, "orientation": "horizontal"},
-      {"id": 5, "startX": 5, "startY": 4, "length": 2, "orientation": "vertical"}
+      {
+        "id": 1,
+        "startX": 0,
+        "startY": 2,
+        "length": 4,
+        "orientation": "horizontal",
+        "direction": "left"
+      },
+      {
+        "id": 2,
+        "startX": 2,
+        "startY": 0,
+        "length": 4,
+        "orientation": "vertical",
+        "direction": "up"
+      },
+      {
+        "id": 3,
+        "startX": 4,
+        "startY": 1,
+        "length": 2,
+        "orientation": "horizontal",
+        "direction": "left"
+      },
+      {
+        "id": 4,
+        "startX": 1,
+        "startY": 4,
+        "length": 3,
+        "orientation": "horizontal",
+        "direction": "left"
+      },
+      {
+        "id": 5,
+        "startX": 5,
+        "startY": 4,
+        "length": 2,
+        "orientation": "vertical",
+        "direction": "up"
+      }
     ],
     "difficulty": "medium",
     "parMoves": 5,
@@ -82,11 +257,46 @@
     "levelId": 17,
     "gridSize": 6,
     "lines": [
-      {"id": 1, "startX": 1, "startY": 1, "length": 3, "orientation": "horizontal"},
-      {"id": 2, "startX": 1, "startY": 3, "length": 4, "orientation": "horizontal"},
-      {"id": 3, "startX": 0, "startY": 0, "length": 2, "orientation": "vertical"},
-      {"id": 4, "startX": 3, "startY": 0, "length": 2, "orientation": "vertical"},
-      {"id": 5, "startX": 5, "startY": 3, "length": 2, "orientation": "vertical"}
+      {
+        "id": 1,
+        "startX": 1,
+        "startY": 1,
+        "length": 3,
+        "orientation": "horizontal",
+        "direction": "right"
+      },
+      {
+        "id": 2,
+        "startX": 1,
+        "startY": 3,
+        "length": 4,
+        "orientation": "horizontal",
+        "direction": "left"
+      },
+      {
+        "id": 3,
+        "startX": 0,
+        "startY": 0,
+        "length": 2,
+        "orientation": "vertical",
+        "direction": "up"
+      },
+      {
+        "id": 4,
+        "startX": 3,
+        "startY": 0,
+        "length": 2,
+        "orientation": "vertical",
+        "direction": "up"
+      },
+      {
+        "id": 5,
+        "startX": 5,
+        "startY": 3,
+        "length": 2,
+        "orientation": "vertical",
+        "direction": "up"
+      }
     ],
     "difficulty": "medium",
     "parMoves": 5,
@@ -96,11 +306,46 @@
     "levelId": 18,
     "gridSize": 6,
     "lines": [
-      {"id": 1, "startX": 2, "startY": 2, "length": 3, "orientation": "horizontal"},
-      {"id": 2, "startX": 2, "startY": 1, "length": 3, "orientation": "vertical"},
-      {"id": 3, "startX": 0, "startY": 0, "length": 2, "orientation": "horizontal"},
-      {"id": 4, "startX": 4, "startY": 0, "length": 2, "orientation": "horizontal"},
-      {"id": 5, "startX": 0, "startY": 4, "length": 2, "orientation": "vertical"}
+      {
+        "id": 1,
+        "startX": 2,
+        "startY": 2,
+        "length": 3,
+        "orientation": "horizontal",
+        "direction": "left"
+      },
+      {
+        "id": 2,
+        "startX": 2,
+        "startY": 1,
+        "length": 3,
+        "orientation": "vertical",
+        "direction": "up"
+      },
+      {
+        "id": 3,
+        "startX": 0,
+        "startY": 0,
+        "length": 2,
+        "orientation": "horizontal",
+        "direction": "left"
+      },
+      {
+        "id": 4,
+        "startX": 4,
+        "startY": 0,
+        "length": 2,
+        "orientation": "horizontal",
+        "direction": "left"
+      },
+      {
+        "id": 5,
+        "startX": 0,
+        "startY": 4,
+        "length": 2,
+        "orientation": "vertical",
+        "direction": "up"
+      }
     ],
     "difficulty": "medium",
     "parMoves": 5,
@@ -110,11 +355,46 @@
     "levelId": 19,
     "gridSize": 6,
     "lines": [
-      {"id": 1, "startX": 1, "startY": 2, "length": 4, "orientation": "horizontal"},
-      {"id": 2, "startX": 2, "startY": 0, "length": 3, "orientation": "vertical"},
-      {"id": 3, "startX": 4, "startY": 3, "length": 3, "orientation": "vertical"},
-      {"id": 4, "startX": 0, "startY": 1, "length": 2, "orientation": "vertical"},
-      {"id": 5, "startX": 1, "startY": 5, "length": 3, "orientation": "horizontal"}
+      {
+        "id": 1,
+        "startX": 1,
+        "startY": 2,
+        "length": 4,
+        "orientation": "horizontal",
+        "direction": "right"
+      },
+      {
+        "id": 2,
+        "startX": 2,
+        "startY": 0,
+        "length": 3,
+        "orientation": "vertical",
+        "direction": "up"
+      },
+      {
+        "id": 3,
+        "startX": 4,
+        "startY": 3,
+        "length": 3,
+        "orientation": "vertical",
+        "direction": "up"
+      },
+      {
+        "id": 4,
+        "startX": 0,
+        "startY": 1,
+        "length": 2,
+        "orientation": "vertical",
+        "direction": "up"
+      },
+      {
+        "id": 5,
+        "startX": 1,
+        "startY": 5,
+        "length": 3,
+        "orientation": "horizontal",
+        "direction": "left"
+      }
     ],
     "difficulty": "medium",
     "parMoves": 5,
@@ -124,12 +404,54 @@
     "levelId": 20,
     "gridSize": 6,
     "lines": [
-      {"id": 1, "startX": 0, "startY": 1, "length": 3, "orientation": "horizontal"},
-      {"id": 2, "startX": 3, "startY": 2, "length": 3, "orientation": "horizontal"},
-      {"id": 3, "startX": 1, "startY": 4, "length": 3, "orientation": "horizontal"},
-      {"id": 4, "startX": 2, "startY": 0, "length": 2, "orientation": "vertical"},
-      {"id": 5, "startX": 4, "startY": 0, "length": 2, "orientation": "vertical"},
-      {"id": 6, "startX": 0, "startY": 3, "length": 2, "orientation": "vertical"}
+      {
+        "id": 1,
+        "startX": 0,
+        "startY": 1,
+        "length": 3,
+        "orientation": "horizontal",
+        "direction": "left"
+      },
+      {
+        "id": 2,
+        "startX": 3,
+        "startY": 2,
+        "length": 3,
+        "orientation": "horizontal",
+        "direction": "left"
+      },
+      {
+        "id": 3,
+        "startX": 1,
+        "startY": 4,
+        "length": 3,
+        "orientation": "horizontal",
+        "direction": "right"
+      },
+      {
+        "id": 4,
+        "startX": 2,
+        "startY": 0,
+        "length": 2,
+        "orientation": "vertical",
+        "direction": "up"
+      },
+      {
+        "id": 5,
+        "startX": 4,
+        "startY": 0,
+        "length": 2,
+        "orientation": "vertical",
+        "direction": "up"
+      },
+      {
+        "id": 6,
+        "startX": 0,
+        "startY": 3,
+        "length": 2,
+        "orientation": "vertical",
+        "direction": "up"
+      }
     ],
     "difficulty": "medium",
     "parMoves": 6,
