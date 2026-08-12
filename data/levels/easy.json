@@ -57,9 +57,33 @@
     "levelId": 6,
     "gridSize": 5,
     "lines": [
-      {"id": 1, "startX": 0, "startY": 1, "length": 2, "orientation": "horizontal"},
-      {"id": 2, "startX": 3, "startY": 1, "length": 2, "orientation": "horizontal"},
-      {"id": 3, "startX": 2, "startY": 3, "length": 2, "orientation": "vertical"}
+      {
+        "id": 1,
+        "startX": 0,
+        "startY": 0,
+        "length": 5,
+        "orientation": "horizontal",
+        "direction": "down",
+        "path": [{"x": 0, "y": 0}, {"x": 0, "y": 2}, {"x": 1, "y": 2}, {"x": 1, "y": 3}]
+      },
+      {
+        "id": 2,
+        "startX": 3,
+        "startY": 0,
+        "length": 4,
+        "orientation": "horizontal",
+        "direction": "left",
+        "path": [{"x": 3, "y": 0}, {"x": 3, "y": 2}, {"x": 2, "y": 2}]
+      },
+      {
+        "id": 3,
+        "startX": 4,
+        "startY": 3,
+        "length": 4,
+        "orientation": "vertical",
+        "direction": "up",
+        "path": [{"x": 4, "y": 4}, {"x": 2, "y": 4}, {"x": 2, "y": 3}]
+      }
     ],
     "difficulty": "easy",
     "parMoves": 3,
