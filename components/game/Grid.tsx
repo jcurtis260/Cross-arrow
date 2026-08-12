@@ -2,7 +2,6 @@
 
 import React, { useMemo } from 'react';
 import { Line } from './Line';
-import { ArrowButton } from './ArrowButton';
 import { useGameStore } from '@/store/game-store';
 import { getValidDirectionsForLine } from '@/lib/collision-detector';
 import { AnimatePresence } from 'framer-motion';
@@ -61,40 +60,28 @@ export function Grid({ cellSize = 60 }: GridProps) {
         {gridLines}
         
         <AnimatePresence>
-          {lines.map((line) => (
-            <Line
-              key={line.id}
-              line={line}
-              cellSize={cellSize}
-              gridSize={grid.size}
-            />
-          ))}
-        </AnimatePresence>
-        
-        {lines.map((line) => {
-          const validDirections = getValidDirectionsForLine(line, grid);
-          
-          return validDirections.map((direction) => {
-            let posX = line.startX * cellSize;
-            let posY = line.startY * cellSize;
+          {lines.map((line) => {
+            const validDirections = getValidDirectionsForLine(line, grid);
             
-            if (line.orientation === 'horizontal') {
-              posX += (line.length * cellSize) / 2 - cellSize / 2;
-            } else {
-              posY += (line.length * cellSize) / 2 - cellSize / 2;
-            }
+            // Get the first valid direction (or empty if none)
+            const primaryDirection = validDirections[0];
             
             return (
-              <ArrowButton
-                key={`${line.id}-${direction}`}
-                direction={direction}
-                onClick={() => makeMove(line.id, direction)}
+              <Line
+                key={line.id}
+                line={line}
                 cellSize={cellSize}
-                position={{ x: posX, y: posY }}
+                gridSize={grid.size}
+                validDirections={validDirections}
+                onClick={() => {
+                  if (primaryDirection) {
+                    makeMove(line.id, primaryDirection);
+                  }
+                }}
               />
             );
-          });
-        })}
+          })}
+        </AnimatePresence>
       </div>
     </div>
   );
