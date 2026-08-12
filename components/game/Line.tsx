@@ -52,13 +52,16 @@ export function Line({ line, cellSize, gridSize, validDirections, onClick }: Lin
       aria-label={`Arrow pointing ${direction}`}
       role="button"
       initial={{ opacity: 0 }}
-      animate={isLeaving ? { ...exitOffset, opacity: 0 } : { x: 0, y: 0, opacity: canLeave ? 1 : 0.35 }}
-      transition={isLeaving ? { duration: 0.48, ease: 'easeIn' } : { duration: 0.15 }}
-      onClick={() => canLeave && setIsLeaving(true)}
+      animate={isLeaving
+        ? { ...exitOffset, opacity: [1, 1, 0] }
+        : { x: 0, y: 0, opacity: 1 }}
+      transition={isLeaving
+        ? { duration: 0.72, ease: [0.16, 0.84, 0.28, 1] }
+        : { duration: 0.15 }}
       onAnimationComplete={() => {
         if (isLeaving) onClick();
       }}
-      className={`absolute inset-0 z-10 overflow-visible ${canLeave ? 'cursor-pointer' : 'cursor-not-allowed'}`}
+      className="absolute inset-0 z-10 overflow-visible"
       style={{ width: boardSize, height: boardSize, pointerEvents: 'none' }}
     >
       <motion.path
@@ -68,7 +71,8 @@ export function Line({ line, cellSize, gridSize, validDirections, onClick }: Lin
         strokeLinecap="square"
         strokeWidth="4"
         pointerEvents={canLeave && !isLeaving ? 'stroke' : 'none'}
-        onClick={() => canLeave && setIsLeaving(true)}
+        onClick={() => setIsLeaving(true)}
+        style={{ cursor: canLeave ? 'pointer' : 'default' }}
       />
       <polygon points={arrow} fill="black" pointerEvents="none" />
     </motion.svg>
