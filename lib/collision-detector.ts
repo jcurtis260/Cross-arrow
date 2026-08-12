@@ -85,35 +85,18 @@ function getRayCast(start: Cell, direction: Direction, gridSize: number): Cell[]
   return cells;
 }
 
-export function willLineExitGrid(line: Line, direction: Direction, gridSize: number): boolean {
-  const lineCells = getLineCells(line);
-  
-  for (const cell of lineCells) {
-    switch (direction) {
-      case 'up':
-        if (cell.y === 0) return true;
-        break;
-      case 'down':
-        if (cell.y === gridSize - 1) return true;
-        break;
-      case 'left':
-        if (cell.x === 0) return true;
-        break;
-      case 'right':
-        if (cell.x === gridSize - 1) return true;
-        break;
-    }
-  }
-  
-  return false;
-}
-
 export function getValidDirectionsForLine(line: Line, grid: Grid): Direction[] {
   const validDirections: Direction[] = [];
   const directions: Direction[] = ['up', 'down', 'left', 'right'];
   
   for (const direction of directions) {
-    if (canLineSlide(line, direction, grid) && willLineExitGrid(line, direction, grid.size)) {
+    // Check if line can move in this direction (perpendicular to orientation)
+    if (!canLineMoveInDirection(line, direction)) {
+      continue;
+    }
+    
+    // Check if path is clear
+    if (canLineSlide(line, direction, grid)) {
       validDirections.push(direction);
     }
   }

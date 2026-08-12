@@ -1,5 +1,5 @@
 import { Level, Grid, Cell, Line, Direction, GameState } from '@/types/game';
-import { getLineCells, willLineExitGrid } from './collision-detector';
+import { getLineCells } from './collision-detector';
 
 export function createGrid(size: number): Grid {
   const cells: Cell[][] = [];
@@ -60,7 +60,9 @@ export function moveLineInDirection(
     }
   }
   
-  const willExit = willLineExitGrid(line, direction, grid.size);
+  // Check if line will move off the grid
+  const newLine = moveLine(line, direction);
+  const willExit = isLineOffGrid(newLine, grid.size);
   
   if (willExit) {
     return {
@@ -70,7 +72,6 @@ export function moveLineInDirection(
     };
   }
   
-  const newLine = moveLine(line, direction);
   const newLineCells = getLineCells(newLine);
   
   for (const cell of newLineCells) {
@@ -109,6 +110,19 @@ function moveLine(line: Line, direction: Direction): Line {
     startX: newStartX,
     startY: newStartY
   };
+}
+
+function isLineOffGrid(line: Line, gridSize: number): boolean {
+  // Check if any part of the line is outside the grid
+  const lineCells = getLineCells(line);
+  
+  for (const cell of lineCells) {
+    if (cell.x < 0 || cell.x >= gridSize || cell.y < 0 || cell.y >= gridSize) {
+      return true;
+    }
+  }
+  
+  return false;
 }
 
 export function checkWinCondition(lines: Line[]): boolean {
