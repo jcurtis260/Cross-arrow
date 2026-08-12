@@ -1,6 +1,9 @@
 import { sql } from '@vercel/postgres';
+import { ensureDbInitialized } from './init-db';
 
 export async function createOrGetPlayer(username: string) {
+  await ensureDbInitialized();
+  
   try {
     const result = await sql`
       INSERT INTO players (username)
@@ -24,6 +27,8 @@ export async function submitScore(
   timeSeconds: number,
   score: number
 ) {
+  await ensureDbInitialized();
+  
   try {
     const player = await createOrGetPlayer(username);
     
@@ -41,6 +46,8 @@ export async function submitScore(
 }
 
 export async function getGlobalLeaderboard(limit = 100) {
+  await ensureDbInitialized();
+  
   try {
     const result = await sql`
       SELECT 
@@ -68,6 +75,8 @@ export async function getGlobalLeaderboard(limit = 100) {
 }
 
 export async function getLevelLeaderboard(levelId: number, limit = 50) {
+  await ensureDbInitialized();
+  
   try {
     const result = await sql`
       SELECT 
@@ -98,6 +107,8 @@ export async function getLevelLeaderboard(levelId: number, limit = 50) {
 }
 
 export async function getDailyLeaderboard(limit = 100) {
+  await ensureDbInitialized();
+  
   try {
     const result = await sql`
       SELECT 
@@ -130,6 +141,8 @@ export async function getDailyLeaderboard(limit = 100) {
 }
 
 export async function getWeeklyLeaderboard(limit = 100) {
+  await ensureDbInitialized();
+  
   try {
     const result = await sql`
       SELECT 

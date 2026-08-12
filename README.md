@@ -84,13 +84,13 @@ Open [http://localhost:3000](http://localhost:3000) to play the game!
 4. Select a region close to your users
 5. Click **Create**
 
-### Step 3: Connect Database to Project
+### Step 3: Deploy the Application
 
-1. After creating the database, go to the **Query** tab
-2. Copy the contents of `database/schema.sql`
-3. Paste and execute the SQL to create tables and indexes
+**The database will automatically initialize on first use!** 
 
-### Step 4: Deploy the Application
+You don't need to manually run any SQL - the app will create the tables automatically when you first access the leaderboard or submit a score.
+
+### Step 4: Deploy via Vercel Dashboard
 
 #### Option A: Deploy via Vercel Dashboard
 
@@ -117,10 +117,24 @@ vercel
 
 1. Visit your deployed URL (e.g., `https://cross-arrow.vercel.app`)
 2. Test gameplay and level completion
-3. Submit a test score to verify leaderboard functionality
-4. Check the Vercel Logs for any errors
+3. Submit a test score - this will automatically create the database tables!
+4. Check the leaderboard to verify everything works
+5. Check the Vercel Logs for any errors
 
-### Step 6: Custom Domain (Optional)
+**Note:** The first API call might take a moment as it initializes the database. Subsequent calls will be fast.
+
+### Step 6: Manual Database Initialization (Optional)
+
+If you prefer to manually initialize the database before first use, you can:
+
+**Option A:** Visit `https://your-app.vercel.app/api/init-db` in your browser
+
+**Option B:** Use the Vercel Postgres Query interface:
+1. Go to your database → Query tab
+2. Copy contents of `database/schema.sql`
+3. Execute the SQL
+
+### Step 7: Custom Domain (Optional)
 
 1. In Vercel project settings, go to **Domains**
 2. Add your custom domain
