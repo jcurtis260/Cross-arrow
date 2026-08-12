@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Line as LineType, Direction } from '@/types/game';
 
@@ -13,6 +13,8 @@ interface LineProps {
 }
 
 export function Line({ line, cellSize, gridSize, validDirections, onClick }: LineProps) {
+  const [isAnimating, setIsAnimating] = useState(false);
+  
   const x = line.startX * cellSize;
   const y = line.startY * cellSize;
   const width = line.orientation === 'horizontal' ? line.length * cellSize : cellSize;
@@ -22,23 +24,56 @@ export function Line({ line, cellSize, gridSize, validDirections, onClick }: Lin
   const offset = (cellSize - lineThickness) / 2;
   
   const canMove = validDirections.length > 0;
+  const primaryDirection = validDirections[0];
   
-  // Arrow size
-  const arrowSize = cellSize * 0.5;
+  // Calculate exit animation
+  let exitX = line.orientation === 'horizontal' ? x : x + offset;
+  let exitY = line.orientation === 'vertical' ? y : y + offset;
+  
+  if (isAnimating && primaryDirection) {
+    const distance = gridSize * cellSize + cellSize * 2;
+    switch (primaryDirection) {
+      case 'up':
+        exitY = -distance;
+        break;
+      case 'down':
+        exitY = distance;
+        break;
+      case 'left':
+        exitX = -distance;
+        break;
+      case 'right':
+        exitX = distance;
+        break;
+    }
+  }
+  
+  const handleClick = () => {
+    if (canMove && !isAnimating) {
+      setIsAnimating(true);
+      setTimeout(() => {
+        onClick();
+      }, 400);
+    }
+  };
   
   return (
     <motion.div
-      layout
       initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
+      animate={{ 
+        opacity: isAnimating ? 0 : 1,
+        scale: 1,
+        left: exitX,
+        top: exitY,
+      }}
       exit={{ opacity: 0, scale: 0.8 }}
       transition={{
-        type: 'spring',
-        stiffness: 300,
-        damping: 30,
+        type: isAnimating ? 'tween' : 'spring',
+        duration: isAnimating ? 0.4 : 0.3,
+        ease: isAnimating ? 'easeInOut' : 'easeOut',
       }}
-      onClick={canMove ? onClick : undefined}
-      className={`absolute bg-black rounded-full ${canMove ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'}`}
+      onClick={handleClick}
+      className={`absolute bg-black rounded-full ${canMove ? 'cursor-pointer active:scale-95' : 'cursor-not-allowed opacity-50'}`}
       style={{
         left: line.orientation === 'horizontal' ? x : x + offset,
         top: line.orientation === 'vertical' ? y : y + offset,
@@ -46,58 +81,66 @@ export function Line({ line, cellSize, gridSize, validDirections, onClick }: Lin
         height: line.orientation === 'vertical' ? height : lineThickness,
       }}
     >
-      {/* Draw arrows at the ends of lines showing valid directions */}
+      {/* Draw clear arrows at the ends */}
       {canMove && validDirections.map((direction) => {
-        let arrowX = 0;
-        let arrowY = 0;
-        let rotation = 0;
+        let arrowStyle: React.CSSProperties = {};
+        let arrowPath = '';
         
         if (line.orientation === 'horizontal') {
-          // Horizontal line - arrows on top or bottom center
-          arrowX = (width / 2) - (arrowSize / 2);
+          // Horizontal line - arrows on top or bottom
           if (direction === 'up') {
-            arrowY = -(arrowSize * 0.7);
-            rotation = 0;
+            arrowStyle = {
+              position: 'absolute',
+              left: '50%',
+              top: '-12px',
+              transform: 'translateX(-50%)',
+            };
+            arrowPath = 'M12 4L8 8h3v8h2V8h3z';
           } else if (direction === 'down') {
-            arrowY = lineThickness - (arrowSize * 0.3);
-            rotation = 180;
+            arrowStyle = {
+              position: 'absolute',
+              left: '50%',
+              bottom: '-12px',
+              transform: 'translateX(-50%) rotate(180deg)',
+            };
+            arrowPath = 'M12 4L8 8h3v8h2V8h3z';
           }
         } else {
-          // Vertical line - arrows on left or right center
-          arrowY = (height / 2) - (arrowSize / 2);
+          // Vertical line - arrows on left or right
           if (direction === 'left') {
-            arrowX = -(arrowSize * 0.7);
-            rotation = -90;
+            arrowStyle = {
+              position: 'absolute',
+              top: '50%',
+              left: '-12px',
+              transform: 'translateY(-50%) rotate(-90deg)',
+            };
+            arrowPath = 'M12 4L8 8h3v8h2V8h3z';
           } else if (direction === 'right') {
-            arrowX = lineThickness - (arrowSize * 0.3);
-            rotation = 90;
+            arrowStyle = {
+              position: 'absolute',
+              top: '50%',
+              right: '-12px',
+              transform: 'translateY(-50%) rotate(90deg)',
+            };
+            arrowPath = 'M12 4L8 8h3v8h2V8h3z';
           }
         }
         
         return (
-          <div
+          <svg
             key={direction}
-            className="absolute flex items-center justify-center pointer-events-none"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="white"
             style={{
-              left: arrowX,
-              top: arrowY,
-              width: arrowSize,
-              height: arrowSize,
+              ...arrowStyle,
+              filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.4))',
+              pointerEvents: 'none',
             }}
           >
-            <svg
-              width={arrowSize * 0.8}
-              height={arrowSize * 0.8}
-              viewBox="0 0 24 24"
-              fill="white"
-              style={{
-                transform: `rotate(${rotation}deg)`,
-                filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.3))',
-              }}
-            >
-              <path d="M12 2l-10 10h7v10h6V12h7z" />
-            </svg>
-          </div>
+            <path d={arrowPath} />
+          </svg>
         );
       })}
     </motion.div>
