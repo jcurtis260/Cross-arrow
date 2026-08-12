@@ -1,6 +1,10 @@
 import { Line, Direction, Grid, Cell } from '@/types/game';
 
 export function getLineCells(line: Line): Cell[] {
+  if (line.path && line.path.length > 0) {
+    return getPathCells(line);
+  }
+
   const cells: Cell[] = [];
   
   if (line.orientation === 'horizontal') {
@@ -24,6 +28,32 @@ export function getLineCells(line: Line): Cell[] {
   }
   
   return cells;
+}
+
+function getPathCells(line: Line): Cell[] {
+  const occupied = new Map<string, Cell>();
+  const points = line.path ?? [];
+
+  for (let index = 0; index < points.length - 1; index++) {
+    const start = points[index];
+    const end = points[index + 1];
+
+    if (start.x !== end.x && start.y !== end.y) {
+      throw new Error(`Arrow ${line.id} contains a diagonal path segment.`);
+    }
+
+    const stepX = Math.sign(end.x - start.x);
+    const stepY = Math.sign(end.y - start.y);
+    const length = Math.max(Math.abs(end.x - start.x), Math.abs(end.y - start.y));
+
+    for (let step = 0; step <= length; step++) {
+      const x = start.x + step * stepX;
+      const y = start.y + step * stepY;
+      occupied.set(`${x},${y}`, { x, y, occupied: true, lineId: line.id });
+    }
+  }
+
+  return [...occupied.values()];
 }
 
 export function getLineDirection(line: Line): Direction {

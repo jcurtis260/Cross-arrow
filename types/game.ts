@@ -15,6 +15,7 @@ export interface Line {
   length: number;
   orientation: Orientation;
   direction?: Direction;
+  path?: Position[];
 }
 
 export interface Level {
