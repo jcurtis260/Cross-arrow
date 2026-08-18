@@ -16,6 +16,7 @@ export interface Line {
   orientation: Orientation;
   direction?: Direction;
   path?: Position[];
+  color?: string;
 }
 
 export interface Level {

@@ -19,6 +19,7 @@ export function Line({ line, cellSize, gridSize, validDirections, onClick }: Lin
   const [travelDistance, setTravelDistance] = useState(0);
   const onExitRef = useRef(onClick);
   const direction = getLineDirection(line);
+  const strokeColor = line.color ?? '#111827';
   const canLeave = validDirections.length > 0;
   const boardSize = gridSize * cellSize;
   const boardDistance = boardSize + cellSize * 2;
@@ -128,14 +129,14 @@ export function Line({ line, cellSize, gridSize, validDirections, onClick }: Lin
       <path
         d={pathData}
         fill="none"
-        stroke="black"
+        stroke={strokeColor}
         strokeLinecap="square"
         strokeWidth="4"
         pointerEvents={!isLeaving ? 'stroke' : 'none'}
         onClick={handleArrowTap}
         style={{ cursor: isLeaving ? 'default' : 'pointer' }}
       />
-      <polygon points={arrow} fill="black" pointerEvents="none" />
+      <polygon points={arrow} fill={strokeColor} pointerEvents="none" />
     </motion.svg>
   );
 }

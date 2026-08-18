@@ -56,6 +56,15 @@ export default function Home() {
           >
             {hasProgress ? 'New Game' : 'Start Playing'}
           </Button>
+
+          <Button
+            onClick={() => router.push(`/game?random=1&seed=${Date.now()}`)}
+            variant="secondary"
+            size="lg"
+            className="w-full"
+          >
+            Random Snake Challenge
+          </Button>
           
           {hasProgress && (
             <Button
