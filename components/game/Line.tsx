@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import { motion } from 'framer-motion';
 import { Line as LineType, Direction } from '@/types/game';
 import { getLineDirection } from '@/lib/collision-detector';
 
@@ -14,6 +15,7 @@ interface LineProps {
 
 export function Line({ line, cellSize, gridSize, validDirections, onClick }: LineProps) {
   const [isLeaving, setIsLeaving] = useState(false);
+  const [isBouncing, setIsBouncing] = useState(false);
   const [travelDistance, setTravelDistance] = useState(0);
   const onExitRef = useRef(onClick);
   const direction = getLineDirection(line);
@@ -88,10 +90,28 @@ export function Line({ line, cellSize, gridSize, validDirections, onClick }: Lin
     };
   }, [bodyLength, boardDistance, isLeaving]);
 
+  const bounceOffset = movePoint({ x: 0, y: 0 }, direction, cellSize * 0.16);
+
+  const handleArrowTap = () => {
+    if (isLeaving || isBouncing) return;
+
+    if (canLeave) {
+      setIsLeaving(true);
+      return;
+    }
+
+    setIsBouncing(true);
+    window.setTimeout(() => setIsBouncing(false), 180);
+  };
+
   return (
-    <svg
+    <motion.svg
       aria-label={`Arrow pointing ${direction}`}
       role="button"
+      animate={isBouncing ? bounceOffset : { x: 0, y: 0 }}
+      transition={isBouncing
+        ? { type: 'spring', stiffness: 850, damping: 18, mass: 0.35 }
+        : { type: 'spring', stiffness: 620, damping: 14, mass: 0.35 }}
       className="absolute inset-0 z-10 overflow-visible"
       style={{ width: boardSize, height: boardSize, pointerEvents: 'none' }}
     >
@@ -101,12 +121,12 @@ export function Line({ line, cellSize, gridSize, validDirections, onClick }: Lin
         stroke="black"
         strokeLinecap="square"
         strokeWidth="4"
-        pointerEvents={canLeave && !isLeaving ? 'stroke' : 'none'}
-        onClick={() => setIsLeaving(true)}
-        style={{ cursor: canLeave ? 'pointer' : 'default' }}
+        pointerEvents={!isLeaving ? 'stroke' : 'none'}
+        onClick={handleArrowTap}
+        style={{ cursor: isLeaving ? 'default' : 'pointer' }}
       />
       <polygon points={arrow} fill="black" pointerEvents="none" />
-    </svg>
+    </motion.svg>
   );
 }
 
