@@ -28,8 +28,10 @@ export function GameHUD() {
     <div className="w-full max-w-md bg-white rounded-lg shadow-md p-4 mb-4">
       <div className="flex items-center justify-between">
         <div className="text-center">
-          <div className="text-sm text-gray-600">Level</div>
-          <div className="text-xl font-bold">{currentLevel.levelId}</div>
+          <div className="text-sm text-gray-600">Challenge</div>
+          <div className="text-xl font-bold">
+            {currentLevel.levelId > 30 ? 'Random' : currentLevel.levelId}
+          </div>
         </div>
         
         <div className="text-center">

@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/Button';
 import { useGameStore } from '@/store/game-store';
 import { loadLevel } from '@/lib/level-loader';
 import { createRandomChallenge } from '@/lib/random-level-generator';
+import { LevelStats } from '@/types/game';
 
 function GameContent() {
   const router = useRouter();
@@ -32,7 +33,9 @@ function GameContent() {
   
   const [showPauseMenu, setShowPauseMenu] = useState(false);
   const [showCompleteModal, setShowCompleteModal] = useState(false);
-  const [levelStats, setLevelStats] = useState<any>(null);
+  const [levelStats, setLevelStats] = useState<LevelStats | null>(null);
+  const [username, setUsername] = useState('');
+  const [scoreStatus, setScoreStatus] = useState<'idle' | 'submitting' | 'submitted' | 'error'>('idle');
   
   useEffect(() => {
     const level = isRandomChallenge ? createRandomChallenge(randomSeed) : loadLevel(levelId);
@@ -47,6 +50,8 @@ function GameContent() {
     if (gameStatus === 'completed' && !showCompleteModal) {
       const stats = completeLevel();
       setLevelStats(stats);
+      setUsername(localStorage.getItem('username') || '');
+      setScoreStatus('idle');
       setShowCompleteModal(true);
     }
   }, [gameStatus, completeLevel, showCompleteModal]);
@@ -84,6 +89,32 @@ function GameContent() {
   const handleReplay = () => {
     setShowCompleteModal(false);
     resetLevel();
+  };
+
+  const submitCompletedScore = async () => {
+    if (!levelStats || !currentLevel || username.trim().length < 2) return;
+
+    setScoreStatus('submitting');
+    try {
+      const response = await fetch('/api/scores', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: username.trim(),
+          levelId: currentLevel.levelId,
+          moves: levelStats.moves,
+          timeSeconds: levelStats.timeSeconds,
+          score: levelStats.score,
+          gridSize: currentLevel.gridSize,
+        }),
+      });
+
+      if (!response.ok) throw new Error('Score submission failed');
+      localStorage.setItem('username', username.trim());
+      setScoreStatus('submitted');
+    } catch {
+      setScoreStatus('error');
+    }
   };
   
   const getStarDisplay = (stars: number) => {
@@ -156,9 +187,6 @@ function GameContent() {
           <Button onClick={handleRestart} variant="secondary" className="w-full">
             Restart Level
           </Button>
-          <Button onClick={() => router.push('/levels')} variant="outline" className="w-full">
-            Level Select
-          </Button>
           <Button onClick={() => router.push('/')} variant="outline" className="w-full">
             Main Menu
           </Button>
@@ -191,13 +219,44 @@ function GameContent() {
               </div>
             </div>
           )}
+
+          <div className="rounded-lg border border-gray-200 p-3 text-left">
+            {scoreStatus === 'submitted' ? (
+              <p className="text-center text-sm font-medium text-green-700">Score submitted to the leaderboard.</p>
+            ) : (
+              <>
+                <label htmlFor="player-name" className="mb-1 block text-sm font-medium text-gray-700">
+                  Leaderboard name
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    id="player-name"
+                    value={username}
+                    onChange={(event) => setUsername(event.target.value.slice(0, 50))}
+                    placeholder="Enter a name"
+                    minLength={2}
+                    maxLength={50}
+                    className="min-w-0 flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-accent focus:outline-none"
+                  />
+                  <Button
+                    onClick={submitCompletedScore}
+                    size="sm"
+                    disabled={username.trim().length < 2 || scoreStatus === 'submitting'}
+                  >
+                    {scoreStatus === 'submitting' ? 'Saving...' : 'Submit'}
+                  </Button>
+                </div>
+                {scoreStatus === 'error' && (
+                  <p className="mt-2 text-xs text-red-600">Could not submit the score. Please try again.</p>
+                )}
+              </>
+            )}
+          </div>
           
           <div className="space-y-3 pt-4">
-            {levelId < 30 && (
-              <Button onClick={handleNextLevel} className="w-full">
-                Next Level →
-              </Button>
-            )}
+            <Button onClick={handleNextLevel} className="w-full">
+              New Challenge →
+            </Button>
             <Button onClick={handleReplay} variant="secondary" className="w-full">
               Replay
             </Button>

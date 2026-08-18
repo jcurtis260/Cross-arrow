@@ -40,7 +40,9 @@ export function createRandomChallenge(seed = Date.now()): Level {
 
     if (solution && lines.length >= 8 && openingMoves >= 1 && openingMoves <= 3) {
       return {
-        levelId: 100000 + (seed % 900000),
+        // A single leaderboard category for generated boards; unique seeds
+        // must not inflate a player's "levels completed" total.
+        levelId: 99999,
         gridSize,
         lines,
         difficulty: 'hard',
@@ -163,7 +165,7 @@ function createFallbackChallenge(seed: number): Level {
     { id: 4, startX: 2, startY: 5, length: 4, orientation: 'horizontal', direction: 'right', path: [{ x: 2, y: 5 }, { x: 5, y: 5 }], color: COLORS[3] },
   ];
 
-  return { levelId: 100000 + (seed % 900000), gridSize: 8, lines, difficulty: 'hard', parMoves: lines.length, hintsAvailable: 1 };
+  return { levelId: 99999, gridSize: 8, lines, difficulty: 'hard', parMoves: lines.length, hintsAvailable: 1 };
 }
 
 function allCells(gridSize: number): Position[] {
