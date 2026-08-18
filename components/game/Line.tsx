@@ -1,7 +1,6 @@
 'use client';
 
-import React, { useLayoutEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useRef, useState } from 'react';
 import { Line as LineType, Direction } from '@/types/game';
 import { getLineDirection } from '@/lib/collision-detector';
 
@@ -15,8 +14,8 @@ interface LineProps {
 
 export function Line({ line, cellSize, gridSize, validDirections, onClick }: LineProps) {
   const [isLeaving, setIsLeaving] = useState(false);
-  const [pathLength, setPathLength] = useState(0);
-  const pathRef = useRef<SVGPathElement>(null);
+  const [travelDistance, setTravelDistance] = useState(0);
+  const onExitRef = useRef(onClick);
   const direction = getLineDirection(line);
   const canLeave = validDirections.length > 0;
   const boardSize = gridSize * cellSize;
@@ -37,62 +36,118 @@ export function Line({ line, cellSize, gridSize, validDirections, onClick }: Lin
     x: point.x * cellSize + cellSize / 2,
     y: point.y * cellSize + cellSize / 2,
   }));
-  const pathData = svgPoints.map((point, index) => `${index === 0 ? 'M' : 'L'} ${point.x} ${point.y}`).join(' ');
-  const arrowTip = svgPoints.at(-1)!;
+  const bodyLength = getPolylineLength(svgPoints);
+  const exitPoint = movePoint(svgPoints.at(-1)!, direction, boardDistance);
+  const snakeTrack = [...svgPoints, exitPoint];
+  const visiblePoints = isLeaving
+    ? slicePolyline(snakeTrack, travelDistance, Math.min(travelDistance + bodyLength, bodyLength + boardDistance))
+    : svgPoints;
+  const pathData = visiblePoints.map((point, index) => `${index === 0 ? 'M' : 'L'} ${point.x} ${point.y}`).join(' ');
+  const arrowTip = visiblePoints.at(-1)!;
   const arrow = getArrowHead(arrowTip.x, arrowTip.y, direction);
 
-  const exitOffset = direction === 'left'
-    ? { x: -boardDistance, y: 0 }
-    : direction === 'right'
-      ? { x: boardDistance, y: 0 }
-      : direction === 'up'
-        ? { x: 0, y: -boardDistance }
-        : { x: 0, y: boardDistance };
+  useEffect(() => {
+    onExitRef.current = onClick;
+  }, [onClick]);
 
-  useLayoutEffect(() => {
-    if (pathRef.current) {
-      setPathLength(pathRef.current.getTotalLength());
-    }
-  }, [pathData]);
+  useEffect(() => {
+    if (!isLeaving) return;
+
+    const duration = 850;
+    const totalDistance = bodyLength + boardDistance;
+    let frameId = 0;
+    const startedAt = performance.now();
+
+    const animate = (now: number) => {
+      const linearProgress = Math.min((now - startedAt) / duration, 1);
+      const easedProgress = 1 - Math.pow(1 - linearProgress, 3);
+      setTravelDistance(totalDistance * easedProgress);
+
+      if (linearProgress < 1) {
+        frameId = requestAnimationFrame(animate);
+      } else {
+        onExitRef.current();
+      }
+    };
+
+    frameId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(frameId);
+  }, [bodyLength, boardDistance, isLeaving]);
 
   return (
-    <motion.svg
+    <svg
       aria-label={`Arrow pointing ${direction}`}
       role="button"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.15 }}
       className="absolute inset-0 z-10 overflow-visible"
       style={{ width: boardSize, height: boardSize, pointerEvents: 'none' }}
     >
-      <motion.path
-        ref={pathRef}
+      <path
         d={pathData}
         fill="none"
         stroke="black"
         strokeLinecap="square"
         strokeWidth="4"
-        animate={isLeaving && pathLength > 0 ? { strokeDashoffset: -pathLength } : { strokeDashoffset: 0 }}
-        transition={{ duration: 0.72, ease: [0.16, 0.84, 0.28, 1] }}
         pointerEvents={canLeave && !isLeaving ? 'stroke' : 'none'}
         onClick={() => setIsLeaving(true)}
-        style={{
-          cursor: canLeave ? 'pointer' : 'default',
-          strokeDasharray: pathLength > 0 ? `${pathLength} ${pathLength}` : undefined,
-        }}
+        style={{ cursor: canLeave ? 'pointer' : 'default' }}
       />
-      <motion.polygon
-        points={arrow}
-        fill="black"
-        pointerEvents="none"
-        animate={isLeaving ? { ...exitOffset, opacity: [1, 1, 0] } : { x: 0, y: 0, opacity: 1 }}
-        transition={{ duration: 0.72, ease: [0.16, 0.84, 0.28, 1] }}
-        onAnimationComplete={() => {
-          if (isLeaving) onClick();
-        }}
-      />
-    </motion.svg>
+      <polygon points={arrow} fill="black" pointerEvents="none" />
+    </svg>
   );
+}
+
+function getPolylineLength(points: Array<{ x: number; y: number }>): number {
+  return points.slice(1).reduce((length, point, index) => {
+    const previous = points[index];
+    return length + Math.hypot(point.x - previous.x, point.y - previous.y);
+  }, 0);
+}
+
+function movePoint(point: { x: number; y: number }, direction: Direction, distance: number) {
+  if (direction === 'left') return { x: point.x - distance, y: point.y };
+  if (direction === 'right') return { x: point.x + distance, y: point.y };
+  if (direction === 'up') return { x: point.x, y: point.y - distance };
+  return { x: point.x, y: point.y + distance };
+}
+
+function slicePolyline(
+  points: Array<{ x: number; y: number }>,
+  start: number,
+  end: number,
+): Array<{ x: number; y: number }> {
+  const result = [pointAtDistance(points, start)];
+  let traversed = 0;
+
+  for (let index = 1; index < points.length; index++) {
+    const point = points[index];
+    const previous = points[index - 1];
+    const segmentLength = Math.hypot(point.x - previous.x, point.y - previous.y);
+    const segmentEnd = traversed + segmentLength;
+
+    if (segmentEnd > start && segmentEnd < end) result.push(point);
+    traversed = segmentEnd;
+  }
+
+  result.push(pointAtDistance(points, end));
+  return result;
+}
+
+function pointAtDistance(points: Array<{ x: number; y: number }>, distance: number) {
+  let remaining = distance;
+
+  for (let index = 1; index < points.length; index++) {
+    const start = points[index - 1];
+    const end = points[index];
+    const segmentLength = Math.hypot(end.x - start.x, end.y - start.y);
+
+    if (remaining <= segmentLength) {
+      const ratio = segmentLength === 0 ? 0 : remaining / segmentLength;
+      return { x: start.x + (end.x - start.x) * ratio, y: start.y + (end.y - start.y) * ratio };
+    }
+    remaining -= segmentLength;
+  }
+
+  return points.at(-1)!;
 }
 
 function getArrowHead(x: number, y: number, direction: Direction): string {
