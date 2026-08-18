@@ -53,10 +53,17 @@ export function Line({ line, cellSize, gridSize, validDirections, onClick }: Lin
   useEffect(() => {
     if (!isLeaving) return;
 
-    const duration = 850;
+    const duration = 1100;
     const totalDistance = bodyLength + boardDistance;
     let frameId = 0;
+    let didFinish = false;
     const startedAt = performance.now();
+
+    const finish = () => {
+      if (didFinish) return;
+      didFinish = true;
+      onExitRef.current();
+    };
 
     const animate = (now: number) => {
       const linearProgress = Math.min((now - startedAt) / duration, 1);
@@ -66,12 +73,19 @@ export function Line({ line, cellSize, gridSize, validDirections, onClick }: Lin
       if (linearProgress < 1) {
         frameId = requestAnimationFrame(animate);
       } else {
-        onExitRef.current();
+        finish();
       }
     };
 
     frameId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(frameId);
+    // Browser animation frames can be throttled or suspended on mobile.
+    // The fallback keeps the visual animation and the game state in sync.
+    const completionTimeout = window.setTimeout(finish, duration + 150);
+
+    return () => {
+      cancelAnimationFrame(frameId);
+      window.clearTimeout(completionTimeout);
+    };
   }, [bodyLength, boardDistance, isLeaving]);
 
   return (
