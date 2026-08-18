@@ -100,7 +100,7 @@
     ],
     "difficulty": "hard",
     "parMoves": 5,
-    "hintsAvailable": 3
+    "hintsAvailable": 1
   },
   {
     "levelId": 22,
@@ -229,7 +229,7 @@
     ],
     "difficulty": "hard",
     "parMoves": 6,
-    "hintsAvailable": 3
+    "hintsAvailable": 1
   },
   {
     "levelId": 23,
@@ -340,7 +340,7 @@
     ],
     "difficulty": "hard",
     "parMoves": 6,
-    "hintsAvailable": 3
+    "hintsAvailable": 1
   },
   {
     "levelId": 24,
@@ -459,7 +459,7 @@
     ],
     "difficulty": "hard",
     "parMoves": 7,
-    "hintsAvailable": 3
+    "hintsAvailable": 1
   },
   {
     "levelId": 25,
@@ -560,7 +560,7 @@
     ],
     "difficulty": "hard",
     "parMoves": 7,
-    "hintsAvailable": 3
+    "hintsAvailable": 1
   },
   {
     "levelId": 26,
@@ -643,7 +643,7 @@
     ],
     "difficulty": "hard",
     "parMoves": 7,
-    "hintsAvailable": 3
+    "hintsAvailable": 1
   },
   {
     "levelId": 27,
@@ -788,7 +788,7 @@
     ],
     "difficulty": "hard",
     "parMoves": 8,
-    "hintsAvailable": 3
+    "hintsAvailable": 1
   },
   {
     "levelId": 28,
@@ -846,19 +846,19 @@
         "path": [
           {
             "x": 1,
-            "y": 1
-          },
-          {
-            "x": 0,
-            "y": 1
+            "y": 3
           },
           {
             "x": 0,
             "y": 3
+          },
+          {
+            "x": 0,
+            "y": 1
           },
           {
             "x": 1,
-            "y": 3
+            "y": 1
           }
         ]
       },
@@ -915,7 +915,7 @@
     ],
     "difficulty": "hard",
     "parMoves": 8,
-    "hintsAvailable": 3
+    "hintsAvailable": 1
   },
   {
     "levelId": 29,
@@ -1006,7 +1006,7 @@
     ],
     "difficulty": "hard",
     "parMoves": 8,
-    "hintsAvailable": 3
+    "hintsAvailable": 1
   },
   {
     "levelId": 30,
@@ -1115,6 +1115,6 @@
     ],
     "difficulty": "hard",
     "parMoves": 8,
-    "hintsAvailable": 3
+    "hintsAvailable": 1
   }
 ]
