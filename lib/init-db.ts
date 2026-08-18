@@ -1,9 +1,13 @@
 import { sql } from '@vercel/postgres';
 
 let dbInitialized = false;
+let initializationError: string | null = null;
 
 export async function initializeDatabase() {
   if (dbInitialized) {
+    if (initializationError) {
+      return { success: false, error: initializationError };
+    }
     return { success: true, message: 'Database already initialized' };
   }
 
@@ -56,17 +60,19 @@ export async function initializeDatabase() {
   } catch (error) {
     console.error('Error initializing database:', error);
     
-    // Even if there's an error (like tables already exist), mark as initialized
-    // to avoid repeated initialization attempts
+    initializationError = 'Leaderboard database is not connected.';
     dbInitialized = true;
     
-    return { success: false, error: String(error) };
+    return { success: false, error: initializationError };
   }
 }
 
 // Helper function to ensure DB is initialized before operations
 export async function ensureDbInitialized() {
   if (!dbInitialized) {
-    await initializeDatabase();
+    const result = await initializeDatabase();
+    if (!result.success) {
+      throw new Error('Leaderboard database is not connected.');
+    }
   }
 }

@@ -7,7 +7,7 @@ export async function GET() {
     
     return NextResponse.json({
       success: result.success,
-      message: result.message,
+      message: result.success ? result.message : 'Leaderboard database is not connected.',
     });
   } catch (error) {
     console.error('Error in GET /api/init-db:', error);
