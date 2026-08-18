@@ -72,23 +72,17 @@ export function canLineSlide(line: Line, direction: Direction, grid: Grid): bool
   if (direction !== getLineDirection(line)) return false;
 
   const cells = getLineCells(line);
-  const leadingCell = getLeadingCell(cells, direction);
 
-  for (const pathCell of getForwardPath(leadingCell, direction, grid.size)) {
-    const gridCell = grid.cells[pathCell.y]?.[pathCell.x];
-    if (gridCell?.occupied && gridCell.lineId !== line.id) return false;
+  // A connected arrow translates as one body. Every occupied cell therefore
+  // needs a clear lane, not only the furthest cell on one row or column.
+  for (const cell of cells) {
+    for (const pathCell of getForwardPath(cell, direction, grid.size)) {
+      const gridCell = grid.cells[pathCell.y]?.[pathCell.x];
+      if (gridCell?.occupied && gridCell.lineId !== line.id) return false;
+    }
   }
 
   return true;
-}
-
-function getLeadingCell(cells: Cell[], direction: Direction): Cell {
-  return cells.reduce((leading, cell) => {
-    if (direction === 'right') return cell.x > leading.x ? cell : leading;
-    if (direction === 'left') return cell.x < leading.x ? cell : leading;
-    if (direction === 'down') return cell.y > leading.y ? cell : leading;
-    return cell.y < leading.y ? cell : leading;
-  });
 }
 
 function getForwardPath(start: Cell, direction: Direction, gridSize: number): Cell[] {
