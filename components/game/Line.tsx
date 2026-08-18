@@ -25,14 +25,24 @@ export function Line({ line, cellSize, gridSize, validDirections, onClick }: Lin
   const pathPoints = line.path?.length
     ? line.path
     : line.orientation === 'horizontal'
-      ? [
-          { x: line.startX, y: line.startY },
-          { x: line.startX + line.length - 1, y: line.startY },
-        ]
-      : [
-          { x: line.startX, y: line.startY },
-          { x: line.startX, y: line.startY + line.length - 1 },
-        ];
+      ? direction === 'left'
+        ? [
+            { x: line.startX + line.length - 1, y: line.startY },
+            { x: line.startX, y: line.startY },
+          ]
+        : [
+            { x: line.startX, y: line.startY },
+            { x: line.startX + line.length - 1, y: line.startY },
+          ]
+      : direction === 'up'
+        ? [
+            { x: line.startX, y: line.startY + line.length - 1 },
+            { x: line.startX, y: line.startY },
+          ]
+        : [
+            { x: line.startX, y: line.startY },
+            { x: line.startX, y: line.startY + line.length - 1 },
+          ];
 
   const svgPoints = pathPoints.map((point) => ({
     x: point.x * cellSize + cellSize / 2,
