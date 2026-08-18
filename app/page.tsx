@@ -58,7 +58,7 @@ export default function Home() {
           </Button>
 
           <Button
-            onClick={() => router.push(`/game?random=1&seed=${Date.now()}`)}
+            onClick={() => window.location.assign(`/game?random=1&seed=${Date.now()}`)}
             variant="secondary"
             size="lg"
             className="w-full"
