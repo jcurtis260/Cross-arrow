@@ -116,6 +116,19 @@ function GameContent() {
       setScoreStatus('error');
     }
   };
+
+  useEffect(() => {
+    if (
+      showCompleteModal &&
+      levelStats &&
+      username.trim().length >= 2 &&
+      scoreStatus === 'idle'
+    ) {
+      submitCompletedScore();
+    }
+    // submitCompletedScore intentionally reads the current completion state.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showCompleteModal, levelStats, username, scoreStatus]);
   
   const getStarDisplay = (stars: number) => {
     return Array.from({ length: 3 }).map((_, i) => (
