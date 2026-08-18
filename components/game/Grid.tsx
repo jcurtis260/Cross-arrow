@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Line } from './Line';
 import { useGameStore } from '@/store/game-store';
 import { getValidDirectionsForLine } from '@/lib/collision-detector';
@@ -12,8 +12,23 @@ interface GridProps {
 
 export function Grid({ cellSize = 60 }: GridProps) {
   const { grid, lines, makeMove } = useGameStore();
-  
-  const gridSize = grid ? grid.size * cellSize : 0;
+  const [responsiveCellSize, setResponsiveCellSize] = useState(cellSize);
+
+  useEffect(() => {
+    if (!grid) return;
+
+    const updateCellSize = () => {
+      const availableWidth = window.innerWidth - 32;
+      setResponsiveCellSize(Math.min(cellSize, Math.floor(availableWidth / grid.size)));
+    };
+
+    updateCellSize();
+    window.addEventListener('resize', updateCellSize);
+    return () => window.removeEventListener('resize', updateCellSize);
+  }, [cellSize, grid]);
+
+  const actualCellSize = grid ? responsiveCellSize : cellSize;
+  const gridSize = grid ? grid.size * actualCellSize : 0;
   
   if (!grid) return null;
   
@@ -37,7 +52,7 @@ export function Grid({ cellSize = 60 }: GridProps) {
               <Line
                 key={line.id}
                 line={line}
-                cellSize={cellSize}
+                cellSize={actualCellSize}
                 gridSize={grid.size}
                 validDirections={validDirections}
                 onClick={() => {

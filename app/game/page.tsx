@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, Suspense } from 'react';
+import React, { useEffect, useRef, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Grid } from '@/components/game/Grid';
 import { GameHUD } from '@/components/game/GameHUD';
@@ -9,11 +9,15 @@ import { Modal } from '@/components/ui/Modal';
 import { Button } from '@/components/ui/Button';
 import { useGameStore } from '@/store/game-store';
 import { loadLevel } from '@/lib/level-loader';
+import { createRandomChallenge } from '@/lib/random-level-generator';
 
 function GameContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const generatedSeed = useRef(Date.now());
   const levelId = parseInt(searchParams.get('level') || '1');
+  const isRandomChallenge = searchParams.get('random') === '1';
+  const randomSeed = isRandomChallenge ? parseInt(searchParams.get('seed') || `${generatedSeed.current}`) : 0;
   
   const { 
     startLevel, 
@@ -31,13 +35,13 @@ function GameContent() {
   const [levelStats, setLevelStats] = useState<any>(null);
   
   useEffect(() => {
-    const level = loadLevel(levelId);
+    const level = isRandomChallenge ? createRandomChallenge(randomSeed) : loadLevel(levelId);
     if (level) {
       startLevel(level);
     } else {
       router.push('/');
     }
-  }, [levelId, startLevel, router]);
+  }, [isRandomChallenge, levelId, randomSeed, startLevel, router]);
   
   useEffect(() => {
     if (gameStatus === 'completed' && !showCompleteModal) {
@@ -64,6 +68,11 @@ function GameContent() {
   
   const handleNextLevel = () => {
     setShowCompleteModal(false);
+    if (isRandomChallenge) {
+      router.push(`/game?random=1&seed=${Date.now()}`);
+      return;
+    }
+
     const nextLevelId = levelId + 1;
     if (nextLevelId <= 30) {
       router.push(`/game?level=${nextLevelId}`);
